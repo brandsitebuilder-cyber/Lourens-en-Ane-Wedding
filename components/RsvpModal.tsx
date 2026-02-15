@@ -13,7 +13,9 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
     attending: true,
     guests: 1,
     dietaryRestrictions: '',
-    songRequest: ''
+    songRequest: '',
+    plusOneName: '',
+    plusOneDietary: ''
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -92,18 +94,47 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Guests</label>
+                        <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Total Guests</label>
                         <select 
                         className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive"
                         value={formData.guests}
                         onChange={e => setFormData({...formData, guests: parseInt(e.target.value)})}
                         >
                         {[1, 2, 3, 4, 5].map(num => (
-                            <option key={num} value={num}>{num}</option>
+                            <option key={num} value={num}>{num} {num === 1 ? '(Just Me)' : ''}</option>
                         ))}
                         </select>
                     </div>
                   </div>
+
+                  {formData.guests > 1 && (
+                    <div className="bg-white/50 p-4 border border-wedding-olive/20 mt-2">
+                       <h4 className="font-serif text-lg text-wedding-oliveDark mb-3">Plus One Details</h4>
+                       <div className="space-y-3">
+                         <div>
+                           <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Guest Name(s)</label>
+                           <input
+                             type="text"
+                             required={formData.guests > 1}
+                             placeholder="Full name of your plus one"
+                             className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive"
+                             value={formData.plusOneName || ''}
+                             onChange={e => setFormData({...formData, plusOneName: e.target.value})}
+                           />
+                         </div>
+                         <div>
+                           <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Guest Dietary Restrictions</label>
+                           <input
+                             type="text"
+                             placeholder="Any allergies or preferences?"
+                             className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive"
+                             value={formData.plusOneDietary || ''}
+                             onChange={e => setFormData({...formData, plusOneDietary: e.target.value})}
+                           />
+                         </div>
+                       </div>
+                    </div>
+                  )}
 
                   <div>
                     <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">I promise to dance if you play...</label>
@@ -117,7 +148,7 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Dietary Restrictions</label>
+                    <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Your Dietary Restrictions</label>
                     <textarea 
                       className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive h-20"
                       value={formData.dietaryRestrictions}

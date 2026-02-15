@@ -18,6 +18,8 @@ export interface RsvpData {
   guests: number;
   dietaryRestrictions: string;
   songRequest?: string;
+  plusOneName?: string;
+  plusOneDietary?: string;
 }
 
 export interface NavItem {
