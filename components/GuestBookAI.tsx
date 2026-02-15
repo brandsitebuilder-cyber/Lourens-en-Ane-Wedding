@@ -16,7 +16,7 @@ export const GuestBookAI: React.FC = () => {
     if (!relationship) return;
     setIsLoading(true);
     try {
-      const wish = await generateWeddingWish(relationship, tone, "Lourens and Ane");
+      const wish = await generateWeddingWish(relationship, tone, "Lourens and Ané");
       setGeneratedMessage(wish);
     } catch (e) {
       console.error(e);

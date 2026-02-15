@@ -12,7 +12,8 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
     email: '',
     attending: true,
     guests: 1,
-    dietaryRestrictions: ''
+    dietaryRestrictions: '',
+    songRequest: ''
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -28,7 +29,7 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md transition-all">
-      <div className="bg-wedding-cream w-full max-w-lg p-8 rounded-sm shadow-2xl relative">
+      <div className="bg-wedding-cream w-full max-w-lg p-8 rounded-sm shadow-2xl relative max-h-[90vh] overflow-y-auto">
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 text-wedding-oliveDark hover:text-black font-sans text-xl"
@@ -89,22 +90,36 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
 
               {formData.attending && (
                 <>
-                  <div>
-                    <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Number of Guests</label>
-                    <select 
-                      className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive"
-                      value={formData.guests}
-                      onChange={e => setFormData({...formData, guests: parseInt(e.target.value)})}
-                    >
-                      {[1, 2, 3, 4, 5].map(num => (
-                        <option key={num} value={num}>{num}</option>
-                      ))}
-                    </select>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Guests</label>
+                        <select 
+                        className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive"
+                        value={formData.guests}
+                        onChange={e => setFormData({...formData, guests: parseInt(e.target.value)})}
+                        >
+                        {[1, 2, 3, 4, 5].map(num => (
+                            <option key={num} value={num}>{num}</option>
+                        ))}
+                        </select>
+                    </div>
                   </div>
+
+                  <div>
+                    <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">I promise to dance if you play...</label>
+                    <input 
+                      type="text"
+                      placeholder="Song Title - Artist"
+                      className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive"
+                      value={formData.songRequest || ''}
+                      onChange={e => setFormData({...formData, songRequest: e.target.value})}
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs uppercase tracking-wide text-gray-500 mb-1">Dietary Restrictions</label>
                     <textarea 
-                      className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive h-24"
+                      className="w-full bg-white border border-gray-300 p-3 text-wedding-oliveDark focus:outline-none focus:border-wedding-olive h-20"
                       value={formData.dietaryRestrictions}
                       onChange={e => setFormData({...formData, dietaryRestrictions: e.target.value})}
                     />

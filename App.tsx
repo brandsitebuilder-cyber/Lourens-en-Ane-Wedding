@@ -30,8 +30,8 @@ const App: React.FC = () => {
       </main>
 
       <footer className="bg-wedding-cream py-12 text-center">
-        <h2 className="font-serif text-2xl text-wedding-oliveDark mb-2">Lourens & Ane</h2>
-        <p className="font-sans text-xs uppercase tracking-widest text-gray-500">October 24, 2025 • Cape Town</p>
+        <h2 className="font-serif text-2xl text-wedding-oliveDark mb-2">Lourens & Ané</h2>
+        <p className="font-sans text-xs uppercase tracking-widest text-gray-500">November 21, 2026 • Cape Town</p>
       </footer>
 
       <RsvpModal isOpen={isRsvpOpen} onClose={() => setIsRsvpOpen(false)} />

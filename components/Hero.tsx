@@ -1,10 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface HeroProps {
   onRsvpClick: () => void;
 }
 
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
 export const Hero: React.FC<HeroProps> = ({ onRsvpClick }) => {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const targetDate = new Date('2026-11-21T00:00:00').getTime();
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        clearInterval(interval);
+        return;
+      }
+
+      setTimeLeft({
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((distance % (1000 * 60)) / 1000),
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div id="home" className="relative w-full h-screen flex flex-col md:flex-row overflow-hidden">
       
@@ -15,12 +47,31 @@ export const Hero: React.FC<HeroProps> = ({ onRsvpClick }) => {
 
         <div className="mb-8 md:mb-16 z-10 text-white">
           <p className="text-sm md:text-base tracking-[0.2em] mb-4 md:mb-8 font-sans opacity-80">
-            10.24.2025
+            11.21.2026
           </p>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight mb-8">
             Lourens &<br />
-            Ane
+            Ané
           </h1>
+          
+          <div className="flex gap-4 md:gap-8 font-sans text-center">
+            <div>
+              <span className="text-2xl md:text-3xl font-light block">{timeLeft.days}</span>
+              <span className="text-[10px] uppercase tracking-widest opacity-60">Days</span>
+            </div>
+            <div>
+              <span className="text-2xl md:text-3xl font-light block">{timeLeft.hours}</span>
+              <span className="text-[10px] uppercase tracking-widest opacity-60">Hrs</span>
+            </div>
+            <div>
+              <span className="text-2xl md:text-3xl font-light block">{timeLeft.minutes}</span>
+              <span className="text-[10px] uppercase tracking-widest opacity-60">Mins</span>
+            </div>
+            <div>
+              <span className="text-2xl md:text-3xl font-light block">{timeLeft.seconds}</span>
+              <span className="text-[10px] uppercase tracking-widest opacity-60">Secs</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -28,7 +79,7 @@ export const Hero: React.FC<HeroProps> = ({ onRsvpClick }) => {
       <div className="w-full md:w-[55%] h-1/2 md:h-full relative">
         <img 
           src="https://drive.google.com/thumbnail?id=1BHGQjL4BlWjcKhQ5cK0fg7X4OnLkeSrz&sz=w2000" 
-          alt="Lourens and Ane" 
+          alt="Lourens and Ané" 
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/10"></div>

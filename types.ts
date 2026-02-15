@@ -17,6 +17,7 @@ export interface RsvpData {
   attending: boolean;
   guests: number;
   dietaryRestrictions: string;
+  songRequest?: string;
 }
 
 export interface NavItem {
