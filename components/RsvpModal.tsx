@@ -21,12 +21,43 @@ export const RsvpModal: React.FC<RsvpModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => {
+    
+    // Prepare data mapping for Google Sheet
+    // We combine Plus One details into existing fields to match the specific headers requested
+    const submissionName = formData.guests > 1 && formData.plusOneName 
+      ? `${formData.name} & ${formData.plusOneName}`
+      : formData.name;
+
+    const submissionDietary = formData.guests > 1 && formData.plusOneDietary
+      ? `${formData.dietaryRestrictions ? formData.dietaryRestrictions + '. ' : ''}Plus One: ${formData.plusOneDietary}`
+      : formData.dietaryRestrictions;
+
+    const payload = {
+      fullName: submissionName,
+      email: formData.email,
+      status: formData.attending ? 'Joyfully Accepts' : 'Regretfully Declines',
+      guests: formData.guests,
+      songRequest: formData.songRequest,
+      dietaryRestrictions: submissionDietary
+    };
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbyUpd7-ku4gQwdKcj8c6kSE9zX88GboD6Fk5dYR_ZcFq_cDmANsWI3pTKdYtqHqY9HH0g/exec', {
+        method: 'POST',
+        mode: 'no-cors', // Required for Google Apps Script Web Apps to avoid CORS errors
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+      
       setSubmitted(true);
-    }, 1000);
+    } catch (error) {
+      console.error('Error submitting RSVP:', error);
+      // In a real app, you might want to show an error message to the user here
+    }
   };
 
   return (
